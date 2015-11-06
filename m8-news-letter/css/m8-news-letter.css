@@ -1,0 +1,848 @@
+/* ========= INFORMATION ============================
+
+- document:  Slick Modals - HTML5 and CSS3 powered modal popups
+- author:    Capelle @ Codecanyon
+- profile:   http://codecanyon.net/user/Capelle
+- version:   2.1
+
+==================================================== */
+
+/* ========================
+   Reset and basics
+   ======================== */
+
+.slickModals * {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: normal;
+	font-style: normal;
+	font-size: 100%;
+	vertical-align: baseline;
+	line-height: normal;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.slickModals {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 9999999;
+	visibility: hidden;
+}
+
+/* Overlay */
+.overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	content: "";
+	display: block;
+	opacity: 0;
+	z-index: 1;
+	-webkit-transition-delay: 0.2s;
+	-moz-transition-delay: 0.2s;
+	-ms-transition-delay: 0.2s;
+	transition-delay: 0.2s;
+}
+
+/* Modal window */
+.window {
+	display: inline-block;
+	width: 500px; /* Adjust this value for your custom window width */
+	height: 266px; /* Adjust this value for your custom window height */
+	padding: 40px;
+	position: absolute;
+	margin: auto;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	z-index: 2;
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	opacity: 0;
+	-webkit-transition-delay: 0s;
+	-moz-transition-delay: 0s;
+	-ms-transition-delay: 0s;
+	transition-delay: 0s;
+}
+
+/* Misc */
+input.hiddenInput {
+	display: none;
+	visibility: hidden;
+	opacity: 0;
+}
+.slickModals label {
+	cursor: pointer;
+}
+
+/* ==============================
+   Overlay & Window backgrounds
+   ============================== */
+
+/* Overlay background */
+.overlay.black {
+	background: rgba(0,0,0,0.85);
+}
+.overlay.white {
+	background: rgba(255,255,255,0.85);
+}
+.overlay.transparent {
+	background: none;
+	background: transparent;
+}
+.overlay.custom {
+	background: rgba(77,136,217,0.85);
+}
+.overlay.custom-2 {
+	background: rgba(0,0,0,0.4);
+}
+#special {
+	-webkit-transition: all 0.4s ease;
+	-moz-transition: all 0.4s ease;
+	-ms-transition: all 0.4s ease;
+	transition: all 0.4s ease;
+	display: block;
+	height: 100%;
+	width: 100%;
+	position: relative;
+}
+#special.blur {
+	-webkit-filter: blur(2px);
+	-moz-filter: blur(2px);
+	-ms-filter: blur(2px);
+	filter: blur(2px);
+}
+#special.grayscale {
+	-webkit-filter: grayscale(0.8);
+	-moz-filter: grayscale(0.8);
+	-ms-filter: grayscale(0.8);
+	filter: grayscale(0.8);
+}
+#special.invert {
+	-webkit-filter: invert(1);
+	-moz-filter: invert(1);
+	-ms-filter: invert(1);
+	filter: invert(1);
+}
+#special.scaled {
+	-webkit-transform: scale(0.95);
+	-moz-transform: scale(0.95);
+	-ms-transform: scale(0.95);
+	transform: scale(0.95);
+}
+
+/* Window background */
+.window.black {
+	background: #000;
+}
+.window.white {
+	background: #fff;
+}
+.window.transparent {
+	background: none;
+	background: transparent;
+}
+.window.custom {
+	background: #3e75c1;
+}
+.window.shadow {
+	box-shadow: 0 0 36px rgba(0,0,0,0.2);
+}
+.window.shadow.strong {
+	box-shadow: 0 0 36px rgba(0,0,0,0.4);
+}
+.window.radius {
+	border-radius: 6px;
+}
+
+/* ========================
+   Modal window positions
+   ======================== */
+
+/* Center */
+.window.center {
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+/* Top */
+.window.topLeft {
+	top: 0;
+	left: 0;
+}
+.window.topCenter {
+	top: 0;
+	left: 0;
+	right: 0;
+}
+.window.topRight {
+	top: 0;
+	right: 0;
+}
+
+/* Bottom */
+.window.bottomLeft {
+	bottom: 0;
+	left: 0;
+}
+.window.bottomCenter {
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+.window.bottomRight {
+	bottom: 0;
+	right: 0;
+}
+
+/* On side */
+.window.right {
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+.window.left {
+	top: 0;
+	left: 0;
+	bottom: 0;
+}
+
+/* Margins - use them only when setting the modal window on positions other than center */
+.window.margin-10 {
+	margin: 10px;
+}
+.window.margin-20 {
+	margin: 20px;
+}
+.window.margin-30 {
+	margin: 30px;
+}
+
+/* ========================
+   Modal window animations
+   ======================== */
+
+/* Fade */
+.window.fade {
+	opacity: 0;
+}
+
+/* Zoom */
+.window.zoomIn {
+	-webkit-transform: scale(0.8);
+	-moz-transform: scale(0.8);
+	-ms-transform: scale(0.8);
+	transform: scale(0.8);
+}
+.window.zoomOut {
+	-webkit-transform: scale(1.2);
+	-moz-transform: scale(1.2);
+	-ms-transform: scale(1.2);
+	transform: scale(1.2);
+}
+
+/* Slide */
+.window.slideTop {
+	-webkit-transform: translateY(-20%);
+	-moz-transform: translateY(-20%);
+	-ms-transform: translateY(-20%);
+	transform: translateY(-20%);
+}
+.window.slideBottom {
+	-webkit-transform: translateY(20%);
+	-moz-transform: translateY(20%);
+	-ms-transform: translateY(20%);
+	transform: translateY(20%);
+}
+.window.slideLeft {
+	-webkit-transform: translateX(-20%);
+	-moz-transform: translateX(-20%);
+	-ms-transform: translateX(-20%);
+	transform: translateX(-20%);
+}
+.window.slideRight {
+	-webkit-transform: translateX(20%);
+	-moz-transform: translateX(20%);
+	-ms-transform: translateX(20%);
+	transform: translateX(20%);
+}
+
+/* Rotate */
+.window.rotateIn {
+	-webkit-transform: rotate(720deg) scale(0);
+	-moz-transform: rotate(720deg) scale(0);
+	-ms-transform: rotate(720deg) scale(0);
+	transform: rotate(720deg) scale(0);
+}
+.window.rotateOut {
+	-webkit-transform: rotate(720deg) scale(1.5);
+	-moz-transform: rotate(720deg) scale(1.5);
+	-ms-transform: rotate(720deg) scale(1.5);
+	transform: rotate(720deg) scale(1.5);
+}
+
+/* Flip */
+.window.flipHorizontal {
+	-webkit-transform: rotateY(-90deg);
+	-moz-transform: rotateY(-90deg);
+	-ms-transform: rotateY(-90deg);
+	transform: rotateY(-90deg);
+}
+.window.flipVertical {
+	-webkit-transform: rotateX(-90deg);
+	-moz-transform: rotateX(-90deg);
+	-ms-transform: rotateX(-90deg);
+	transform: rotateX(-90deg);
+}
+
+/* Perpective */
+.window.perspectiveTop {
+	-webkit-transform: perspective(300px) rotateX(-90deg);
+	-moz-transform: perspective(300px) rotateX(-90deg);
+	-ms-transform: perspective(300px) rotateX(-90deg);
+	transform: perspective(300px) rotateX(-90deg);
+	-webkit-transform-origin: top center;
+	-moz-transform-origin: top center;
+	-ms-transform-origin: top center;
+	transform-origin: top center;
+}
+.window.perspectiveBottom {
+	-webkit-transform: perspective(300px) rotateX(90deg);
+	-moz-transform: perspective(300px) rotateX(90deg);
+	-ms-transform: perspective(300px) rotateX(90deg);
+	transform: perspective(300px) rotateX(90deg);
+	-webkit-transform-origin: bottom center;
+	-moz-transform-origin: bottom center;
+	-ms-transform-origin: bottom center;
+	transform-origin: bottom center;
+}
+.window.perspectiveLeft {
+	-webkit-transform: perspective(200px) rotateY(90deg);
+	-moz-transform: perspective(200px) rotateY(90deg);
+	-ms-transform: perspective(200px) rotateY(90deg);
+	transform: perspective(200px) rotateY(90deg);
+	-webkit-transform-origin: center left;
+	-moz-transform-origin: center left;
+	-ms-transform-origin: center left;
+	transform-origin: center left;
+}
+.window.perspectiveRight {
+	-webkit-transform: perspective(200px) rotateY(-90deg);
+	-moz-transform: perspective(200px) rotateY(-90deg);
+	-ms-transform: perspective(200px) rotateY(-90deg);
+	transform: perspective(200px) rotateY(-90deg);
+	-webkit-transform-origin: center right;
+	-moz-transform-origin: center right;
+	-ms-transform-origin: center right;
+	transform-origin: center right;
+}
+
+
+/* ========================
+   Transitions
+   ======================== */
+
+/* Transition easings */
+.slickModals .linear {
+	-webkit-transition-timing-function: linear;
+	-moz-transition-timing-function: linear;
+	-ms-transition-timing-function: linear;
+	transition-timing-function: linear;
+}
+.slickModals .ease {
+	-webkit-transition-timing-function: ease;
+	-moz-transition-timing-function: ease;
+	-ms-transition-timing-function: ease;
+	transition-timing-function: ease;
+}
+.slickModals .ease-in {
+	-webkit-transition-timing-function: ease-in;
+	-moz-transition-timing-function: ease-in;
+	-ms-transition-timing-function: ease-in;
+	transition-timing-function: ease-in;
+}
+.slickModals .ease-out {
+	-webkit-transition-timing-function: ease-out;
+	-moz-transition-timing-function: ease-out;
+	-ms-transition-timing-function: ease-out;
+	transition-timing-function: ease-out;
+}
+.slickModals .ease-in-out {
+	-webkit-transition-timing-function: ease-in-out;
+	-moz-transition-timing-function: ease-in-out;
+	-ms-transition-timing-function: ease-in-out;
+	transition-timing-function: ease-in-out;
+}
+
+/* Transition speeds */
+.slickModals .fastest {
+	-webkit-transition-duration: 0.2s;
+	-moz-transition-duration: 0.2s;
+	-ms-transition-duration: 0.2s;
+	transition-duration: 0.2s;
+}
+.slickModals .fast {
+	-webkit-transition-duration: 0.4s;
+	-moz-transition-duration: 0.4s;
+	-ms-transition-duration: 0.4s;
+	transition-duration: 0.4s;
+}
+.slickModals .medium {
+	-webkit-transition-duration: 0.6s;
+	-moz-transition-duration: 0.6s;
+	-ms-transition-duration: 0.6s;
+	transition-duration: 0.6s;
+}
+.slickModals .slow {
+	-webkit-transition-duration: 0.8s;
+	-moz-transition-duration: 0.8s;
+	-ms-transition-duration: 0.8s;
+	transition-duration: 0.8s;
+}
+.slickModals .slowest {
+	-webkit-transition-duration: 1s;
+	-moz-transition-duration: 1s;
+	-ms-transition-duration: 1s;
+	transition-duration: 1s;
+}
+
+/* ========================
+   Close buttons
+   ======================== */
+
+.slickModals .close {
+	position: absolute;
+	top: -20px;
+	right: 0;
+	z-index: 10;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: 700;
+	transition: all 0.1s ease;
+}
+.slickModals .close:before {
+	white-space: nowrap;
+	display: block;
+	position: relative;
+	transition: all 0.1s ease;
+}
+
+/* Labeled button */
+.slickModals .close.labeled:before {
+	color: #fff;
+	content: "close";
+	font-size: 8px;
+	text-transform: uppercase;
+	background: linear-gradient(to right, #fff 50%, #000 50%);
+	background-size: 200% 100%;
+	background-position: right bottom;
+	padding: 6px 12px;
+	margin-top: -10px;
+}
+.slickModals .close.labeled:hover:before {
+	background-position: left bottom;
+	color: #000;
+}
+
+/* Text button */
+.slickModals .close.text:before {
+	color: #fff;
+	content: "Close";
+	font-size: 9px;
+	text-transform: uppercase;
+}
+
+/* Tag button */
+.slickModals .close.tag:before {
+	color: #fff;
+	content: "\00d7";
+	background: #000;
+	text-align: center;
+	font-size: 15px;
+	width: 24px;
+	height: 24px;
+	line-height: 24px;
+	margin-top: 20px;
+	opacity: 0.2;
+}
+.slickModals .close.tag:hover:before {
+	opacity: 1;
+}
+
+/* Icon button */
+.slickModals .close.icon {
+	display: inline-block;
+	width: 22px;
+	height: 22px;
+	overflow: hidden;
+	margin: 44px 22px 0 0;
+	opacity: 0.5;
+}
+.slickModals .close.icon:hover:before {
+	color: #000;
+}
+.slickModals .close.icon:before,
+.slickModals .close.icon:after {
+	content: "";
+	position: absolute;
+	height: 1px;
+	width: 100%;
+	top: 50%;
+	left: 0;
+	margin-top: -1px;
+	background: #000;
+}
+.slickModals .close.icon:before {
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+.slickModals .close.icon:after {
+	-webkit-transform: rotate(-45deg);
+	-moz-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+}
+.slickModals .close.icon:hover {
+	opacity: 1;
+}
+
+
+/* Main */
+input#m8-news-letter:checked ~ .m8-news-letter {
+	visibility: visible;
+}
+
+/*Window */
+input#m8-news-letter:checked ~ .m8-news-letter .window {
+	-webkit-transform: rotate(0deg) scale(1);
+	-moz-transform: rotate(0deg) scale(1);
+	-ms-transform: rotate(0deg) scale(1);
+	transform: rotate(0deg) scale(1);
+	opacity: 1;
+	-webkit-transition-delay: 0.2s;
+	-moz-transition-delay: 0.2s;
+	-ms-transition-delay: 0.2s;
+	transition-delay: 0.2s;
+}
+/* Overlay */
+input#m8-news-letter:checked ~ .m8-news-letter .overlay {
+	opacity: 1;
+	-webkit-transition-delay: 0s;
+	-moz-transition-delay: 0s;
+	-ms-transition-delay: 0s;
+	transition-delay: 0s;
+}
+
+.slickModals * {
+	font-family: 'Raleway', sans-serif;
+	font-weight: 300;
+}
+.window {
+	text-align: center;
+}
+.window .wrap {
+	background: #d7d9cc;
+	width: 100%;
+	height: 200px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 30px 0;
+}
+.window .wrap:after {
+	position: absolute;
+	top: auto;
+	bottom: 28px;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+	content: "";
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 10px 25px 0 25px;
+	border-color: #d7d9cc transparent transparent transparent;
+	z-index: 10;
+	display: block;
+}
+.window .title {
+	font-weight: 900;
+	font-size: 26px;
+	color: #000;
+	opacity: 0.7;
+	padding-bottom: 4px;
+}
+.window p {
+	font-size: 13px;
+	color: #000;
+}
+.window .cta {
+	background: #fff;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	padding: 40px 0;
+}
+.window .cta label {
+	background: #5f6251;
+	color: #fff;
+	font-weight: 900;
+	font-size: 14px;
+	text-align: center;
+	padding: 12px 36px;
+	letter-spacing: 1px;
+}
+.window .cta label:hover {
+	background: #000;
+}
+.window .popup-icon {
+	background: url("popup-icon.png") 0 0 no-repeat;
+	display: block;
+	content: "";
+	width: 50px;
+	height: 50px;
+	margin: 0 auto 10px auto;
+	opacity: 0.2;
+}
+.slickModals .close.icon.white:before,
+.slickModals .close.icon.white:after {
+	background: #fff;
+}
+.slickModals .close.icon.white {
+	opacity: 1;
+}
+.slickModals .close.icon.white:hover {
+	opacity: 0.6;
+}
+
+.window .wrap.black {
+	background: #333;
+}
+.window .wrap.black:after {
+	display: none;
+}
+.window .wrap.black > .title,
+.window .wrap.black > p {
+	color: #fff;
+	opacity: 1;
+}
+.window .cta.black {
+	background: #333;
+}
+.window .cta.black label {
+	background: #f78f8f;
+}
+.window .cta.black label:hover {
+	opacity: 0.6;
+}
+
+.window .wrap.white {
+	background: #fff;
+}
+.window .wrap.white:after {
+	display: none;
+}
+.window .wrap.white > .title,
+.window .wrap.white > p {
+	color: #333;
+	opacity: 1;
+}
+.window .cta.white {
+	background: #fff;
+	bottom: 16px;
+}
+.window .cta.white label {
+	background: #f78f8f;
+}
+.window .cta.white label:hover {
+	opacity: 0.6;
+}
+
+.window .wrap.custom {
+	background: #3e75c1;
+}
+.window .wrap.custom:after {
+	display: none;
+}
+.window .wrap.custom > .title,
+.window .wrap.custom > p {
+	color: #fff;
+	opacity: 1;
+}
+.window .cta.custom {
+	background: #3e75c1;
+	bottom: 16px;
+}
+.window .cta.custom label {
+	background: #2c5894;
+}
+.window .cta.custom label:hover {
+	opacity: 0.6;
+}
+
+.window .wrap.custom.radius {
+	border-radius: 6px;
+}
+
+.window .wrap.transparent,
+.window .cta.transparent {
+	background: transparent;
+	background: none;
+}
+.window .wrap.transparent:after {
+	display: none;
+}
+.window .wrap.transparent .title,
+.window .wrap.transparent p {
+	color: #fff;
+	opacity: 1;
+}
+.window .cta.transparent label {
+	background: #fff;
+	color: #222;
+}
+.window .cta.transparent label:hover {
+	background: #222;
+	color: #fff;
+}
+
+/* DEMO 1 */
+
+.window.m8-subscribe {
+	height: 300px;
+	width: 560px;
+}
+
+.window .wrap.m8-subscribe {
+	left: 0;
+	width: 60%;
+	height: 100%;
+	background: #fff;
+	text-align: left;
+	padding: 30px;
+}
+.window .wrap.m8-subscribe:after {
+	transform: rotateZ(-90deg);
+	border-color: #fff transparent transparent transparent;
+	bottom: auto;
+	top: 222px;
+	left: auto;
+	right: -24px;
+}
+.window .wrap.m8-subscribe .title {
+	color: #82BD41;
+	padding-bottom: 22px;
+}
+.window .wrap.m8-subscribe p {
+	font-size: 12px;
+	padding-bottom: 22px;
+}
+.window .wrap.m8-subscribe form input.field {
+	background: #eee;
+	padding: 12px;
+	display: block;
+	font-size: 11px;
+	width: 100%;
+}
+.window .wrap.m8-subscribe form .submit {
+	background: #82BD41;
+	color: #fff;
+	font-weight: 900;
+	font-size: 16px;
+	text-align: center;
+	padding: 8px 12px;
+	width: 100%;
+	margin-top: 10px;
+	display: block;
+}
+.window .wrap.m8-subscribe form .submit:hover {
+	background: #222;
+}
+.window .wrap.m8-subscribe .deny {
+	display: block;
+	font-size: 9px;
+	padding-top: 14px;
+	color: #000;
+	font-weight: 300;
+}
+.window .cta.m8-subscribe {
+	right: 0;
+	height: 100%;
+	bottom: auto;
+	top: 0;
+	width: 40%;
+	left: auto;
+	background: #222;
+}
+.window .cta.m8-subscribe span.icon {
+	width: 80px;
+	height: 80px;
+	background: url("../img/email.png") 0 0 no-repeat;
+	content: "";
+	display: block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -40px 0 0 -40px;
+}
+.window .cta.m8-subscribe p {
+	position: absolute;
+	bottom: 62px;
+	font-size: 10px;
+	color: #fff;
+	left: 70px;
+}
+.window .cta.m8-subscribe p span {
+	display: block;
+	font-weight: 900;
+	color: #fff;
+}
+
+.window.special {
+	color: #fff;
+	height: 500px;
+	width: 300px;
+	padding: 0;
+}
+.window.special label.go {
+	background: url("promo-banner.jpg") 0 0 no-repeat;
+	content: "";
+	width: 300px;
+	height: 500px;
+	display: block;
+}
+
+.window.yt,
+.window.maps {
+	width: 80%;
+	height: 80%;
+	padding: 0;
+}
+.window.yt iframe,
+.window.maps iframe,
+#map {
+	width: 100%;
+	height: 100%;
+}
+.window.yt .labeled:before {
+	background: #ef6161;
+}
+.window.yt .labeled:hover:before {
+	background: #fff;
+}
+.section1-m-5 .overlay {
+	background: #000;
+}
